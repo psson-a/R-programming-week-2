@@ -1,4 +1,5 @@
 corr <- function (directory, threshold = 0){
+   output <- NULL
    files <- dir(directory)
    for (filename in files){
       file <- read.csv(paste(directory,'/', filename, sep=''))
@@ -7,7 +8,14 @@ corr <- function (directory, threshold = 0){
       nr_complete <- sum(!incomplete)
       if (nr_complete > threshold){
          #include observation post
-         print(cor(file[['sulfate']], file[['nitrate']]))
+         complete <- file[!incomplete, ]
+         output <- c(output, (cor(complete[['sulfate']], complete[['nitrate']])))
       }
+   }
+   if (is.null(output)){
+      numeric()
+   }
+   else{
+      output
    }
 }
